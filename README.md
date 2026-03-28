@@ -1,191 +1,150 @@
 End-to-End CI/CD Pipeline for Python Flask Application
 
-1. Project Overview
-This project demonstrates an End-to-End CI/CD Pipeline for a Python Flask E-Commerce Application. The objective of this project is to automate the process of building, deploying, and updating a web application using modern DevOps tools.
+---
 
-The application is developed using Python Flask and containerized using Docker. A CI/CD pipeline is implemented using Jenkins, which automatically pulls the latest code from GitHub, builds a Docker image, and deploys the application to an Amazon Web Services EC2 instance.
+## 1. Project Overview
+This project demonstrates an End-to-End CI/CD pipeline for a Python Flask web application using Jenkins, Docker, AWS EC2, and Nginx.
 
-An Nginx reverse proxy is used to route incoming traffic to the running Flask application container.
+The pipeline automatically builds and deploys the application whenever new code is pushed to the GitHub repository. The application is containerized using Docker and deployed on an AWS EC2 instance with Nginx acting as a reverse proxy.
 
-This project simulates a real-world DevOps deployment workflow, enabling faster releases, automated deployments, and scalable infrastructure.
-
-
-2. Technologies Used
-The following tools and technologies were used to build and deploy this CI/CD pipeline:
-
-| Technology              | Purpose                                   |
-| ----------------------- | ----------------------------------------- |
-| Python Flask            | Backend web application framework         |
-| Docker                  | Containerization of the Flask application |
-| Jenkins                 | CI/CD automation pipeline                 |
-| GitHub                  | Source code repository                    |
-| Amazon Web Services EC2 | Cloud server hosting                      |
-| Nginx                   | Reverse proxy and web server              |
-| Linux (Ubuntu)          | Deployment operating system               |
+This project simulates a real-world DevOps deployment workflow including Continuous Integration, Continuous Deployment, containerization, and cloud deployment.
 
 ---
 
-3. CI/CD Pipeline Flow
-
-The CI/CD pipeline automates the deployment process whenever new code is pushed to the repository.
-Workflow
-1. Developer pushes code to the GitHub repository
-2. A Webhook triggers the Jenkins pipeline
-3. Jenkins clones the latest source code from GitHub
-4. Jenkins builds a Docker image for the application using Docker
-5. Jenkins stops the existing running container
-6. Jenkins deploys a new container with the updated application
-7. The application becomes accessible via Nginx reverse proxy on the AWS EC2 server
-
----
-
-CI/CD Flow Diagram
-
-```
+## 2. Architecture Diagram
 Developer
-   │
-   │ Push Code
-   ▼
+│
+│ Push Code
+▼
 GitHub Repository
-   │
-   │ Webhook Trigger
-   ▼
+│
+│ Webhook Trigger
+▼
 Jenkins Pipeline
-   │
-   │ Build Docker Image
-   ▼
+│
+│ Build Docker Image
+▼
 Docker Container
-   │
-   │ Deploy to EC2
-   ▼
-Nginx Reverse Proxy
-   │
-   ▼
-Flask E-Commerce Application
-```
+│
+│ Deploy Container
+▼
+AWS EC2 Instance
+│
+│ Reverse Proxy
+▼
+Nginx Server
+│
+▼
+Flask Web Application
+
 
 ---
 
-4. Architecture Diagram
+## 3. Technologies Used
 
-```
-        +-------------+
-        |  Developer  |
-        +-------------+
-               │
-               │ Push Code
-               ▼
-        +-------------+
-        |   GitHub    |
-        | Repository  |
-        +-------------+
-               │
-               │ Webhook Trigger
-               ▼
-        +-------------+
-        |   Jenkins   |
-        | CI/CD Tool  |
-        +-------------+
-               │
-               │ Build Docker Image
-               ▼
-        +-------------+
-        |   Docker    |
-        | Container   |
-        +-------------+
-               │
-               │ Deploy Container
-               ▼
-      +----------------------+
-      | AWS EC2 Instance     |
-      +----------------------+
-               │
-               │ Reverse Proxy
-               ▼
-        +-------------+
-        |    Nginx    |
-        +-------------+
-               │
-               ▼
-        +-------------------+
-        | Flask E-Commerce  |
-        | Application       |
-        +-------------------+
-```
+| Technology       | Purpose                         |
+|------------------|---------------------------------|
+| Python (Flask)   | Backend Web Application         |
+| Docker           | Containerization                |
+| Jenkins          | CI/CD Automation                |
+| GitHub           | Source Code Repository          |
+| AWS EC2          | Cloud Hosting                   |
+| Nginx            | Reverse Proxy                   |
+| Linux (Ubuntu)   | Deployment Server               |
 
 ---
 
-5. Setup Instructions
+## 4. CI/CD Pipeline Flow
 
-1. Launch EC2 Instance
-Create an Ubuntu server on Amazon Web Services EC2 and connect using SSH.
+The CI/CD pipeline automates the deployment process whenever new code is pushed to GitHub.
 
-```
+Pipeline Workflow:
+1. Developer pushes code to GitHub repository
+2. GitHub webhook triggers Jenkins pipeline
+3. Jenkins pulls latest source code
+4. Jenkins builds Docker image
+5. Jenkins stops old running container
+6. Jenkins removes old container
+7. Jenkins runs new container
+8. Application deployed on AWS EC2
+9. Nginx routes traffic to Flask container
+10. Updated application goes live
+
+---
+
+## 5. Jenkins Pipeline Stages
+
+The Jenkins pipeline consists of the following stages:
+
+1. Clone GitHub Repository
+2. Build Docker Image
+3. Stop Running Container
+4. Remove Old Container
+5. Run New Container
+6. Deploy Application
+
+---
+
+## 6. Setup Instructions
+
+### Connect to AWS EC2
+---
 ssh -i your-key.pem ubuntu@your-ec2-public-ip
-```
 
----
-
-2. Install Docker
-
-```
+Install Docker
 sudo apt update
 sudo apt install docker.io -y
 sudo systemctl start docker
 sudo systemctl enable docker
-```
 
-Verify installation:
-
-```
-docker --version
-```
-
----
-
-3. Install Jenkins
-
-```
-sudo apt update
+Install Jenkins
 sudo apt install openjdk-21-jdk -y
 sudo apt install jenkins -y
 sudo systemctl start jenkins
 sudo systemctl enable jenkins
-```
 
 Access Jenkins:
 
-```
 http://EC2-PUBLIC-IP:8080
-```
-
----
- 4. Install Nginx
-
-```
+Install Nginx
 sudo apt install nginx -y
 sudo systemctl start nginx
-```
 
-Configure Nginx as a reverse proxy for the Flask container.
----
+7. Docker Commands
+Build Docker Image
+docker build -t flask-app .
+Run Docker Container
+docker run -d -p 5000:5000 flask-app
+List Running Containers
+docker ps
+Stop Container
+docker stop <container_id>
 
-5. Configure Jenkins Pipeline
+8. Nginx Configuration
+Edit Nginx configuration file:
+sudo nano /etc/nginx/sites-available/default
+Add the following configuration:
 
-1. Open Jenkins dashboard
-2. Create New Pipeline Job
-3. Connect your GitHub repository
-4. Add Jenkinsfile for pipeline automation
+server {
+    listen 80;
+    location / {
+        proxy_pass http://localhost:5000;
+    }
+}
 
----
+Restart Nginx:
+sudo systemctl restart nginx
 
-6. Jenkins Pipeline
+9. Future Improvements
+Deploy application using Kubernetes
+Use Terraform for AWS infrastructure
+Push Docker images to AWS ECR
+Implement Prometheus monitoring
+Create Grafana dashboards
+Add automated testing stage
+Implement Blue-Green Deployment
 
-The Jenkins pipeline automates the entire deployment process from code commit to application deployment.
-
-Pipeline Stages
-
-* Clone the repository from GitHub
-* Build Docker image
-* Stop the old running container
-* Deploy a new container with updated code
+10. Author
+Shiva
+Aspiring DevOps Engineer
+GitHub: https://github.com/shiva-6300
