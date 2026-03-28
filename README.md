@@ -95,6 +95,7 @@ sudo apt update
 sudo apt install docker.io -y
 sudo systemctl start docker
 sudo systemctl enable docker
+
 Install Jenkins
 sudo apt install openjdk-21-jdk -y
 sudo apt install jenkins -y
@@ -102,11 +103,12 @@ sudo systemctl start jenkins
 sudo systemctl enable jenkins
 
 Access Jenkins:
-
 http://EC2-PUBLIC-IP:8080
+
 Install Nginx
 sudo apt install nginx -y
 sudo systemctl start nginx
+
 7. Docker Commands
 Build Docker Image
 docker build -t flask-app .
@@ -116,12 +118,10 @@ List Running Containers
 docker ps
 Stop Container
 docker stop <container_id>
+
 8. Nginx Configuration
-
 Edit Nginx configuration file:
-
 sudo nano /etc/nginx/sites-available/default
-
 Add the following configuration:
 
 server {
@@ -136,15 +136,15 @@ Restart Nginx:
 sudo systemctl restart nginx
 ```
 9. Future Improvements
-Deploy application using Kubernetes
-Use Terraform for AWS infrastructure
-Push Docker images to AWS ECR
-Implement Prometheus monitoring
-Create Grafana dashboards
-Add automated testing stage
-Implement Blue-Green Deployment
+1.Deploy application using Kubernetes
+2.Use Terraform for AWS infrastructure
+3.Push Docker images to AWS ECR
+4.Implement Prometheus monitoring
+5.Create Grafana dashboards
+6.Add automated testing stage
+7.Implement Blue-Green Deployment
 
-11. Author
+10. Author
 Shiva
 Aspiring DevOps Engineer
 GitHub: https://github.com/shiva-6300
