@@ -1,4 +1,4 @@
-End-to-End CI/CD Pipeline for Python Flask Application
+# End-to-End CI/CD Pipeline for Python Flask Application
 
 ---
 
@@ -42,15 +42,15 @@ Flask Web Application
 
 ## 3. Technologies Used
 
-| Technology       | Purpose                         |
-|------------------|---------------------------------|
-| Python (Flask)   | Backend Web Application         |
-| Docker           | Containerization                |
-| Jenkins          | CI/CD Automation                |
-| GitHub           | Source Code Repository          |
-| AWS EC2          | Cloud Hosting                   |
-| Nginx            | Reverse Proxy                   |
-| Linux (Ubuntu)   | Deployment Server               |
+| Technology | Purpose |
+|------------|---------|
+| Python (Flask) | Backend Web Application |
+| Docker | Containerization |
+| Jenkins | CI/CD Automation |
+| GitHub | Source Code Repository |
+| AWS EC2 | Cloud Hosting |
+| Nginx | Reverse Proxy |
+| Linux (Ubuntu) | Deployment Server |
 
 ---
 
@@ -58,17 +58,17 @@ Flask Web Application
 
 The CI/CD pipeline automates the deployment process whenever new code is pushed to GitHub.
 
-Pipeline Workflow:
-1. Developer pushes code to GitHub repository
-2. GitHub webhook triggers Jenkins pipeline
-3. Jenkins pulls latest source code
-4. Jenkins builds Docker image
-5. Jenkins stops old running container
-6. Jenkins removes old container
-7. Jenkins runs new container
-8. Application deployed on AWS EC2
-9. Nginx routes traffic to Flask container
-10. Updated application goes live
+### Pipeline Workflow:
+1. Developer pushes code to GitHub repository  
+2. GitHub webhook triggers Jenkins pipeline  
+3. Jenkins pulls latest source code  
+4. Jenkins builds Docker image  
+5. Jenkins stops old running container  
+6. Jenkins removes old container  
+7. Jenkins runs new container  
+8. Application deployed on AWS EC2  
+9. Nginx routes traffic to Flask container  
+10. Updated application goes live  
 
 ---
 
@@ -76,27 +76,25 @@ Pipeline Workflow:
 
 The Jenkins pipeline consists of the following stages:
 
-1. Clone GitHub Repository
-2. Build Docker Image
-3. Stop Running Container
-4. Remove Old Container
-5. Run New Container
-6. Deploy Application
+1. Clone GitHub Repository  
+2. Build Docker Image  
+3. Stop Running Container  
+4. Remove Old Container  
+5. Run New Container  
+6. Deploy Application  
 
 ---
 
 ## 6. Setup Instructions
 
 ### Connect to AWS EC2
----
+```bash
 ssh -i your-key.pem ubuntu@your-ec2-public-ip
-
 Install Docker
 sudo apt update
 sudo apt install docker.io -y
 sudo systemctl start docker
 sudo systemctl enable docker
-
 Install Jenkins
 sudo apt install openjdk-21-jdk -y
 sudo apt install jenkins -y
@@ -109,7 +107,6 @@ http://EC2-PUBLIC-IP:8080
 Install Nginx
 sudo apt install nginx -y
 sudo systemctl start nginx
-
 7. Docker Commands
 Build Docker Image
 docker build -t flask-app .
@@ -119,10 +116,12 @@ List Running Containers
 docker ps
 Stop Container
 docker stop <container_id>
-
 8. Nginx Configuration
+
 Edit Nginx configuration file:
+
 sudo nano /etc/nginx/sites-available/default
+
 Add the following configuration:
 
 server {
@@ -133,8 +132,9 @@ server {
 }
 
 Restart Nginx:
-sudo systemctl restart nginx
 
+sudo systemctl restart nginx
+```
 9. Future Improvements
 Deploy application using Kubernetes
 Use Terraform for AWS infrastructure
@@ -144,7 +144,7 @@ Create Grafana dashboards
 Add automated testing stage
 Implement Blue-Green Deployment
 
-10. Author
+11. Author
 Shiva
 Aspiring DevOps Engineer
 GitHub: https://github.com/shiva-6300
