@@ -1,3 +1,25 @@
+````markdown
+```markdown
+````
+
+And inside that, you again used:
+
+```
+```
+
+👉 This breaks parsing (especially in GitHub / YAML renderers)
+
+---
+
+## ✅ FIXED VERSION (Clean & Professional)
+
+👉 **Remove the outer ```markdown block completely**
+👉 Keep only inner code blocks
+
+---
+
+### 🔥 FINAL CORRECT README (COPY THIS)
+
 ```markdown
 # 🚀 End-to-End CI/CD Pipeline for Python Flask Application
 
@@ -210,4 +232,4 @@ Aspiring DevOps Engineer
 
 🔗 GitHub: [https://github.com/shiva-6300](https://github.com/shiva-6300)
 
----
+````
